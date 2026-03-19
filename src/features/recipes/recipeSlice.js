@@ -1,10 +1,9 @@
-import{createSlice,nanoid,createAsyncThunk} from "@reduxjs/toolkit"
+import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
 
-
-const initialState={
-    recipes: JSON.parse(localStorage.getItem("recipes")) || [],
-    status: "idle",
-}
+const initialState = {
+  recipes: JSON.parse(localStorage.getItem("recipes")) || [],
+  status: "idle",
+};
 
 export const fetchRecipes = createAsyncThunk(
   "recipes/fetchRecipes",
@@ -20,13 +19,25 @@ const recipeSlice = createSlice({
   initialState,
   reducers: {
     addRecipe: (state, action) => {
+      const newRecipe = { id: Date.now(), ...action.payload };
+      state.recipes.push(newRecipe);
+      localStorage.setItem("recipes", JSON.stringify(state.recipes));
+      console.log("Added!");
       console.log("Added!");
     },
     editRecipe: (state, action) => {
       console.log("Edit!");
     },
     removeRecipe: (state, action) => {
+      const id = action.payload;
+      state.recipes = state.recipes.filter((recipe) => recipe.id != id);
+      localStorage.setItem("recipes", JSON.stringify(state.recipes));
       console.log("remove");
+      console.log("remove");
+    },
+    updateList: (state, action) => {
+      console.log("Search");
+      state.recipes = [...action.payload];
     },
   },
   extraReducers: (builder) => {
@@ -43,6 +54,7 @@ const recipeSlice = createSlice({
       });
   },
 });
-export const {addRecipe, removeRecipe, editRecipe} = recipeSlice.actions;
+export const { addRecipe, removeRecipe, editRecipe, updateList } =
+  recipeSlice.actions;
 
 export default recipeSlice.reducer;

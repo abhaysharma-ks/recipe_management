@@ -1,39 +1,3 @@
-// import React, { useEffect } from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { fetchRecipes } from "../features/recipes/recipeSlice";
-// import Card from "./Card";
-
-// const Home = () => {
-//   const recipes  = useSelector((state) => state.recipes.recipes);
-//   const  status  = useSelector((state) => state.recipes.status);
-//   const dispatch = useDispatch();
-
-//   useEffect(() => {
-//     // 🔥 Fetch only if list is empty
-//     if (recipes.length === 0) {
-//       dispatch(fetchRecipes());
-//     }
-//   }, [dispatch, recipes.length]);
-
-//   return (
-//     <div>
-//       <h1>🍽️ Recipes</h1>
-
-//       {/* Loading State */}
-//       {status === "loading" && <p>Loading recipes...</p>}
-
-//       {/* Recipes List */}
-//       <div>
-//         {recipes.map((recipe) => (
-//           <Card recipe={recipe}/>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Home;
-
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchRecipes } from "../features/recipes/recipeSlice";
@@ -43,12 +7,19 @@ const Home = () => {
   const recipes = useSelector((state) => state.recipes.recipes);
   const status = useSelector((state) => state.recipes.status);
   const dispatch = useDispatch();
+  const localList = JSON.parse(localStorage.getItem("recipes"));
 
+  console.log(recipes)
   useEffect(() => {
-    if (recipes.length === 0) {
+    if (recipes.length===0 && localList.length === 0)
       dispatch(fetchRecipes());
-    }
-  }, [dispatch, recipes.length]);
+  }, [recipes]);
+
+  if (recipes.length === 0 && localList.length !== 0) {
+    return <h1>No recipe Found</h1>;
+  } else if (status === "loading" && localList.length === 0) {
+    return <div> Heating up the oven</div>;
+  }
 
   return (
     <div style={styles.container}>
@@ -74,7 +45,7 @@ const styles = {
     padding: "20px",
     background: "#f9fafb",
     minHeight: "100vh",
-    fontFamily: "sans-serif"
+    fontFamily: "sans-serif",
   },
 
   heading: {
@@ -82,22 +53,22 @@ const styles = {
     marginBottom: "20px",
     fontSize: "28px",
     fontWeight: "600",
-    color: "#333"
+    color: "#333",
   },
 
   loading: {
     textAlign: "center",
     fontSize: "18px",
-    color: "#777"
+    color: "#777",
   },
 
   grid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-    gap: "20px"
+    gap: "20px",
   },
 
   cardWrapper: {
-    transition: "transform 0.3s ease"
-  }
+    transition: "transform 0.3s ease",
+  },
 };

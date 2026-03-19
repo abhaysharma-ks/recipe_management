@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { removeRecipe } from "../features/recipes/recipeSlice";
 
 const Card = ({ recipe }) => {
+  const dispatch=useDispatch()
+
   return (
     <div style={styles.card}>
       <img src={recipe.image} alt={recipe.name} style={styles.image} />
@@ -9,13 +13,21 @@ const Card = ({ recipe }) => {
       <div style={styles.content}>
         <h3>{recipe.name}</h3>
 
-        {/* ⭐ Rating (dummy for now) */}
         <p>⭐ {recipe.rating || "4.5"}</p>
+
         <Link to={`/recipe/${recipe.id}`}>
-        <button style={styles.button}>
-          View Details
-        </button>
+          <button style={styles.button}>View Details</button>
         </Link>
+
+        <br />
+        <br />
+
+        <button
+          style={styles.delbtn}
+          onClick={() => dispatch(removeRecipe(recipe.id))}
+        >
+          Delete recipe
+        </button>
       </div>
     </div>
   );
@@ -47,5 +59,21 @@ const styles = {
     color: "#fff",
     borderRadius: "6px",
     cursor: "pointer"
-  }
+  },
+  delbtn:{
+    marginTop: "10px",
+    padding: "8px 12px",
+    border: "none",
+    background: "red",
+    color: "#ffff",
+    borderRadius: "6px",
+    cursor: "pointer"
+  },
+  favBtn: {
+  marginTop: "10px",
+  padding: "8px 12px",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer",
+},
 };
