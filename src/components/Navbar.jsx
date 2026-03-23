@@ -46,9 +46,9 @@ const Navbar = () => {
         <Link to="/add" style={styles.navItem}>
           Add New Recipe
         </Link>
-        <Link to="/favourite" style={styles.navItem}>
+        {/* <Link to="/favourite" style={styles.navItem}>
           Favourite Recipe
-        </Link>
+        </Link> */}
       </div>
     </nav>
   );
