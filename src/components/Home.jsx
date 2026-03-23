@@ -7,7 +7,7 @@ const Home = () => {
   const recipes = useSelector((state) => state.recipes.recipes);
   const status = useSelector((state) => state.recipes.status);
   const dispatch = useDispatch();
-  const localList = JSON.parse(localStorage.getItem("recipes"));
+  const localList = JSON.parse(localStorage.getItem("recipes"))??[];
 
   console.log(recipes)
   useEffect(() => {
